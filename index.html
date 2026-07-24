@@ -775,28 +775,17 @@ button.send:disabled { opacity: 0.55; cursor: progress; }
 
     // Submit data directly to Apps Script via fetch API
     fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify(payload)
-    })
-    .then(function () {
-      document.getElementById('live').style.display = 'none';
-      document.getElementById('done').classList.add('on');
-      window.scrollTo(0, 0);
-    })
-    .catch(function (err) {
-      fail(err && err.message);
-    });
- 
-    function fail(msg) {
-      btn.disabled = false;
-      btn.textContent = 'Send my intake form';
-      errBox.textContent = (msg || 'That didn\'t send.') + ' Check your connection and try again, or call the clinic and we\'ll take it over the phone.';
-      errBox.classList.add('on');
-      errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  });
+  method: "POST",
+  body: JSON.stringify(payload)   // no headers → text/plain, no preflight
+})
+.then(function (r) { return r.json(); })
+.then(function (res) {
+  if (res.result !== "success") throw new Error(res.error || "Server rejected the form.");
+  document.getElementById('live').style.display = 'none';
+  document.getElementById('done').classList.add('on');
+  window.scrollTo(0, 0);
+})
+.catch(function (err) { fail(err && err.message); });
  
   tally();
 })();
