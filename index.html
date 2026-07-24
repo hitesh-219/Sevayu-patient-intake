@@ -1,805 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sevayu Brampton — New patient intake</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;0,500;0,700;1,400&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap');
- 
-:root {
-  --ink:      #16302B;
-  --ink-soft: #4A6560;
-  --paper:    #F2F4F1;
-  --card:     #FBFCFA;
-  --moss:     #3F6B54;
-  --moss-dk:  #2C4C3B;
-  --sage:     #C9D8CC;
-  --sand:     #E4E7DF;
-  --alert:    #A8402A;
-  --radius:   10px;
-}
- 
-* { box-sizing: border-box; }
- 
-html { -webkit-text-size-adjust: 100%; }
- 
-body {
-  margin: 0;
-  padding: 0;
-  background: var(--paper);
-  color: var(--ink);
-  font-family: 'Karla', system-ui, -apple-system, sans-serif;
-  font-size: 16px;
-  line-height: 1.55;
-}
- 
-.shell {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 0 20px 72px;
-}
- 
-/* ---------- masthead ---------- */
- 
-.masthead { padding: 44px 0 28px; }
- 
-.eyebrow {
-  margin: 0 0 10px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--moss);
-}
- 
-.masthead h1 {
-  margin: 0 0 12px;
-  font-family: 'Newsreader', Georgia, serif;
-  font-weight: 400;
-  font-size: 40px;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
-}
- 
-.lede {
-  margin: 0;
-  max-width: 46ch;
-  color: var(--ink-soft);
-  font-size: 15.5px;
-}
- 
-/* ---------- completion meter ---------- */
- 
-.meter {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  margin: 0 -20px 32px;
-  padding: 12px 20px;
-  background: rgba(242,244,241,0.92);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--sand);
-}
- 
-.meter-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 8px;
-}
- 
-.meter-label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink-soft);
-}
- 
-.meter-count {
-  font-family: 'Newsreader', Georgia, serif;
-  font-size: 15px;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink);
-}
- 
-.meter-track {
-  height: 4px;
-  border-radius: 999px;
-  background: var(--sand);
-  overflow: hidden;
-}
- 
-.meter-fill {
-  height: 100%;
-  width: 0%;
-  border-radius: 999px;
-  background: var(--moss);
-  transition: width 320ms cubic-bezier(0.2,0.7,0.3,1);
-}
- 
-/* ---------- sections ---------- */
- 
-.sec {
-  margin: 0 0 12px;
-  padding: 26px 22px;
-  background: var(--card);
-  border: 1px solid var(--sand);
-  border-radius: var(--radius);
-}
- 
-.sec h2 {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0 0 6px;
-  font-family: 'Newsreader', Georgia, serif;
-  font-weight: 500;
-  font-size: 23px;
-  letter-spacing: -0.005em;
-}
- 
-.marker {
-  flex: 0 0 auto;
-  display: inline-grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--sage);
-  color: var(--moss-dk);
-  font-family: 'Karla', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
- 
-.sec-note {
-  margin: 0 0 22px 38px;
-  font-size: 14px;
-  color: var(--ink-soft);
-}
- 
-/* ---------- fields ---------- */
- 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
- 
-.field { display: flex; flex-direction: column; }
-.field.wide { grid-column: 1 / -1; }
- 
-.field > label {
-  margin-bottom: 6px;
-  font-size: 14px;
-  font-weight: 500;
-}
- 
-.req {
-  margin-left: 4px;
-  color: var(--moss);
-  font-weight: 700;
-}
- 
-.hint {
-  margin: 0 0 6px;
-  font-size: 12.5px;
-  color: var(--ink-soft);
-}
- 
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="date"],
-select,
-textarea {
-  width: 100%;
-  padding: 12px 13px;
-  border: 1px solid var(--sage);
-  border-radius: 8px;
-  background: #FFF;
-  color: var(--ink);
-  font-family: inherit;
-  font-size: 16px;
-  line-height: 1.4;
-  transition: border-color 140ms ease, box-shadow 140ms ease;
-}
- 
-textarea { min-height: 84px; resize: vertical; }
- 
-select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%234A6560' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 13px center;
-  padding-right: 36px;
-}
- 
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: var(--moss);
-  box-shadow: 0 0 0 3px rgba(63,107,84,0.16);
-}
- 
-input:focus-visible, select:focus-visible, textarea:focus-visible,
-button:focus-visible, .check:focus-within {
-  outline: 2px solid var(--moss);
-  outline-offset: 2px;
-}
- 
-.field.bad input,
-.field.bad select,
-.field.bad textarea { border-color: var(--alert); }
- 
-.err {
-  margin: 5px 0 0;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--alert);
-  display: none;
-}
-.field.bad .err { display: block; }
- 
-/* ---------- pain scale ---------- */
- 
-.scale { display: flex; flex-direction: column; gap: 8px; }
- 
-.scale-track {
-  display: grid;
-  grid-template-columns: repeat(11, 1fr);
-  gap: 4px;
-}
- 
-.scale-track input { position: absolute; opacity: 0; pointer-events: none; }
- 
-.scale-track label {
-  display: grid;
-  place-items: center;
-  padding: 9px 0;
-  border: 1px solid var(--sage);
-  border-radius: 6px;
-  background: #FFF;
-  font-size: 13px;
-  font-variant-numeric: tabular-nums;
-  cursor: pointer;
-  transition: background 120ms ease, color 120ms ease;
-}
- 
-.scale-track input:checked + label {
-  background: var(--moss);
-  border-color: var(--moss);
-  color: #FFF;
-  font-weight: 700;
-}
- 
-.scale-ends {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: var(--ink-soft);
-}
- 
-/* ---------- checkboxes ---------- */
- 
-.check {
-  display: flex;
-  gap: 11px;
-  align-items: flex-start;
-  padding: 13px 14px;
-  border: 1px solid var(--sage);
-  border-radius: 8px;
-  background: #FFF;
-  cursor: pointer;
-}
-.check + .check { margin-top: 10px; }
- 
-.check input { margin: 3px 0 0; width: 17px; height: 17px; accent-color: var(--moss); flex: 0 0 auto; }
-.check span { font-size: 14px; line-height: 1.5; }
- 
-.field.bad .check { border-color: var(--alert); }
- 
-/* ---------- submit ---------- */
- 
-.actions { margin-top: 26px; }
- 
-button.send {
-  width: 100%;
-  padding: 16px;
-  border: none;
-  border-radius: 8px;
-  background: var(--moss);
-  color: #FFF;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  cursor: pointer;
-  transition: background 140ms ease;
-}
-button.send:hover { background: var(--moss-dk); }
-button.send:disabled { opacity: 0.55; cursor: progress; }
- 
-.foot {
-  margin: 16px 0 0;
-  text-align: center;
-  font-size: 12.5px;
-  color: var(--ink-soft);
-}
- 
-.formerr {
-  display: none;
-  margin: 16px 0 0;
-  padding: 13px 15px;
-  border: 1px solid var(--alert);
-  border-radius: 8px;
-  background: #FBF0ED;
-  color: var(--alert);
-  font-size: 14px;
-  font-weight: 500;
-}
-.formerr.on { display: block; }
- 
-/* ---------- done panel ---------- */
- 
-.done { display: none; padding: 60px 0; text-align: center; }
-.done.on { display: block; }
- 
-.done-mark {
-  width: 54px; height: 54px;
-  margin: 0 auto 22px;
-  display: grid; place-items: center;
-  border-radius: 50%;
-  background: var(--sage);
-}
- 
-.done h2 {
-  margin: 0 0 10px;
-  font-family: 'Newsreader', Georgia, serif;
-  font-weight: 400;
-  font-size: 30px;
-}
- 
-.done p { margin: 0 auto; max-width: 38ch; color: var(--ink-soft); }
- 
-.hp { position: absolute; left: -9999px; opacity: 0; height: 0; }
- 
-/* ---------- responsive ---------- */
- 
-@media (max-width: 560px) {
-  .masthead { padding: 32px 0 22px; }
-  .masthead h1 { font-size: 31px; }
-  .grid { grid-template-columns: 1fr; gap: 16px; }
-  .sec { padding: 22px 17px; }
-  .sec-note { margin-left: 0; }
-  .scale-track { grid-template-columns: repeat(6, 1fr); }
-}
- 
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Intake Form</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; color: #333; line-height: 1.6; padding: 20px; }
+    .container { max-width: 600px; margin: 20px auto; background: #fff; border-radius: 8px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    h2 { margin-bottom: 20px; color: #1a252c; font-size: 24px; text-align: center; }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select, textarea {
+      width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; background: #fafafa;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #007aff; background: #fff; }
+    .checkbox-group { display: flex; align-items: center; gap: 10px; }
+    .checkbox-group input { width: auto; cursor: pointer; }
+    .checkbox-group label { margin-bottom: 0; font-weight: normal; cursor: pointer; }
+    button { width: 100%; padding: 14px; background-color: #007aff; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    button:hover { background-color: #0056b3; }
+    #done { display: none; text-align: center; padding: 40px 20px; }
+    #done.on { display: block; }
+    #done h3 { color: #28a745; margin-bottom: 10px; }
+    .error-msg { color: #dc3545; font-size: 14px; display: none; margin-top: 10px; text-align: center; }
+  </style>
 </head>
 <body>
- 
-<div class="shell">
- 
+
+<div class="container">
+  
+  <!-- FORM SECTION -->
   <div id="live">
- 
-    <header class="masthead">
-      <p class="eyebrow">Before your visit</p>
-      <h1>New patient intake</h1>
-      <p class="lede">Takes about four minutes. Your answers go straight to your practitioner, so your first appointment can start with treatment instead of paperwork.</p>
-    </header>
- 
-    <div class="meter" role="status" aria-live="polite">
-      <div class="meter-row">
-        <span class="meter-label">Required questions answered</span>
-        <span class="meter-count"><span id="mDone">0</span> / <span id="mTotal">0</span></span>
+    <h2>Patient Intake Form</h2>
+    <form id="intakeForm">
+      
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" autocomplete="given-name" required>
       </div>
-      <div class="meter-track"><div class="meter-fill" id="mFill"></div></div>
-    </div>
- 
-    <form id="intake" novalidate>
- 
-      <!-- 1 -->
-      <section class="sec">
-        <h2><span class="marker">1</span> About you</h2>
-        <p class="sec-note">As it appears on your health card or ID.</p>
-        <div class="grid">
-          <div class="field">
-            <label for="firstName">First name<span class="req">*</span></label>
-            <input type="text" id="firstName" name="firstName" autocomplete="given-name" data-req>
-            <p class="err">Add your first name.</p>
-          </div>
-          <div class="field">
-            <label for="lastName">Last name<span class="req">*</span></label>
-            <input type="text" id="lastName" name="lastName" autocomplete="family-name" data-req>
-            <p class="err">Add your last name.</p>
-          </div>
-          <div class="field">
-            <label for="dob">Date of birth<span class="req">*</span></label>
-            <input type="date" id="dob" name="dob" autocomplete="bday" data-req>
-            <p class="err">Add your date of birth.</p>
-          </div>
-          <div class="field">
-            <label for="pronouns">Pronouns</label>
-            <input type="text" id="pronouns" name="pronouns" placeholder="Optional">
-          </div>
-        </div>
-      </section>
- 
-      <!-- 2 -->
-      <section class="sec">
-        <h2><span class="marker">2</span> How to reach you</h2>
-        <p class="sec-note">We use this for appointment reminders and nothing else.</p>
-        <div class="grid">
-          <div class="field">
-            <label for="email">Email<span class="req">*</span></label>
-            <input type="email" id="email" name="email" autocomplete="email" data-req data-type="email">
-            <p class="err">Check the email address.</p>
-          </div>
-          <div class="field">
-            <label for="mobile">Mobile phone<span class="req">*</span></label>
-            <input type="tel" id="mobile" name="mobile" autocomplete="tel" data-req data-type="phone">
-            <p class="err">Add a phone number we can reach you on.</p>
-          </div>
-          <div class="field wide">
-            <label for="address">Street address</label>
-            <input type="text" id="address" name="address" autocomplete="street-address">
-          </div>
-          <div class="field">
-            <label for="city">City</label>
-            <input type="text" id="city" name="city" autocomplete="address-level2">
-          </div>
-          <div class="field">
-            <label for="country">Country<span class="req">*</span></label>
-            <select id="country" name="country" data-req>
-              <option value="">Select…</option>
-              <option value="Canada">Canada</option>
-              <option value="United States">United States</option>
-            </select>
-            <p class="err">Pick a country.</p>
-          </div>
-          <div class="field">
-            <label for="region" id="regionLabel">Province / State</label>
-            <select id="region" name="region">
-              <option value="">Select a country first…</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="postal" id="postalLabel">Postal code</label>
-            <input type="text" id="postal" name="postal" autocomplete="postal-code">
-          </div>
-          <div class="field wide">
-            <label for="reminder">Reminder preference</label>
-            <select id="reminder" name="reminder">
-              <option value="Text message">Text message</option>
-              <option value="Email">Email</option>
-              <option value="Both text and email">Both text and email</option>
-              <option value="No reminders">No reminders</option>
-            </select>
-          </div>
-        </div>
-      </section>
- 
-      <!-- 3 -->
-      <section class="sec">
-        <h2><span class="marker">3</span> Why you're coming in</h2>
-        <p class="sec-note">The more detail here, the better your first session will be.</p>
-        <div class="grid">
-          <div class="field wide">
-            <label for="reason">What would you like us to help with?<span class="req">*</span></label>
-            <textarea id="reason" name="reason" data-req placeholder="e.g. Tight left shoulder and neck, worse at the end of the work day"></textarea>
-            <p class="err">Tell us briefly what's bringing you in.</p>
-          </div>
-          <div class="field">
-            <label for="onset">When did it start?</label>
-            <input type="text" id="onset" name="onset" placeholder="e.g. About three months ago">
-          </div>
-          <div class="field">
-            <label for="priorCare">Seen anyone else about it?</label>
-            <input type="text" id="priorCare" name="priorCare" placeholder="e.g. Physio in the spring">
-          </div>
-          <div class="field wide">
-            <label id="painLabel">Discomfort right now<span class="req">*</span></label>
-            <p class="hint">0 is none at all, 10 is the worst you can imagine.</p>
-            <div class="scale" role="radiogroup" aria-labelledby="painLabel">
-              <div class="scale-track" id="painTrack"></div>
-              <div class="scale-ends"><span>No pain</span><span>Worst imaginable</span></div>
-            </div>
-            <p class="err">Pick a number from 0 to 10.</p>
-          </div>
-        </div>
-      </section>
- 
-      <!-- 4 -->
-      <section class="sec">
-        <h2><span class="marker">4</span> Health background</h2>
-        <p class="sec-note">Write "None" where nothing applies. This keeps your treatment safe.</p>
-        <div class="grid">
-          <div class="field wide">
-            <label for="conditions">Medical conditions you're managing<span class="req">*</span></label>
-            <p class="hint">Heart conditions, diabetes, high blood pressure, arthritis, anything ongoing.</p>
-            <textarea id="conditions" name="conditions" data-req></textarea>
-            <p class="err">Write "None" if there aren't any.</p>
-          </div>
-          <div class="field wide">
-            <label for="medications">Medications and supplements<span class="req">*</span></label>
-            <textarea id="medications" name="medications" data-req placeholder="Include anything taken regularly"></textarea>
-            <p class="err">Write "None" if there aren't any.</p>
-          </div>
-          <div class="field wide">
-            <label for="allergies">Allergies<span class="req">*</span></label>
-            <p class="hint">Including oils, lotions, latex, and adhesives.</p>
-            <textarea id="allergies" name="allergies" data-req></textarea>
-            <p class="err">Write "None" if there aren't any.</p>
-          </div>
-          <div class="field wide">
-            <label for="surgeries">Surgeries or injuries in the past two years</label>
-            <textarea id="surgeries" name="surgeries"></textarea>
-          </div>
-          <div class="field">
-            <label for="pregnant">Currently pregnant?</label>
-            <select id="pregnant" name="pregnant">
-              <option value="Not applicable">Not applicable</option>
-              <option value="No">No</option>
-              <option value="Yes">Yes</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="focus">Areas to focus on or avoid</label>
-            <input type="text" id="focus" name="focus" placeholder="e.g. Please avoid my right knee">
-          </div>
-        </div>
-      </section>
- 
-      <!-- 5 -->
-      <section class="sec">
-        <h2><span class="marker">5</span> Emergency contact</h2>
-        <p class="sec-note">Someone we could call if you needed help during a visit.</p>
-        <div class="grid">
-          <div class="field">
-            <label for="ecName">Name</label>
-            <input type="text" id="ecName" name="ecName">
-          </div>
-          <div class="field">
-            <label for="ecPhone">Phone</label>
-            <input type="tel" id="ecPhone" name="ecPhone">
-          </div>
-          <div class="field wide">
-            <label for="heard">How did you hear about us?</label>
-            <select id="heard" name="heard">
-              <option value="">Select…</option>
-              <option value="Friend or family">Friend or family</option>
-              <option value="Google search">Google search</option>
-              <option value="Social media">Social media</option>
-              <option value="Referred by another clinic">Referred by another clinic</option>
-              <option value="Walked past">Walked past</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-        </div>
-      </section>
- 
-      <!-- 6 -->
-      <section class="sec">
-        <h2><span class="marker">6</span> Consent</h2>
-        <p class="sec-note">Read these before you send the form.</p>
-        <div class="field wide" id="consentField">
-          <label class="check">
-            <input type="checkbox" id="cAccurate" name="cAccurate" data-req>
-            <span>Everything I've written here is accurate as far as I know, and I'll tell my practitioner if it changes.</span>
-          </label>
-          <label class="check">
-            <input type="checkbox" id="cTreat" name="cTreat" data-req>
-            <span>I consent to assessment and treatment, and I understand I can stop or change the treatment at any point.</span>
-          </label>
-          <label class="check">
-            <input type="checkbox" id="cPrivacy" name="cPrivacy" data-req>
-            <span>I understand my information is kept in my clinical record and is not shared without my permission, except where the law requires it.</span>
-          </label>
-          <p class="err">Tick all three boxes to continue.</p>
-        </div>
-      </section>
- 
-      <input type="text" class="hp" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
- 
-      <div class="actions">
-        <button type="submit" class="send" id="sendBtn">Send my intake form</button>
-        <p class="formerr" id="formErr"></p>
-        <p class="foot">Sent securely to your clinic. Nothing is shared with anyone else.</p>
+
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" autocomplete="family-name" required>
       </div>
- 
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" autocomplete="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="mobile">Mobile Phone</label>
+        <input type="tel" id="mobile" name="mobile" autocomplete="tel" required>
+      </div>
+
+      <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob" autocomplete="bday" required>
+      </div>
+
+      <div class="form-group">
+        <label for="emergencyContact">Emergency Contact (Name & Phone)</label>
+        <input type="text" id="emergencyContact" name="emergencyContact" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label for="reason">Main Reason for Visit / Areas of Focus</label>
+        <textarea id="reason" name="reason" rows="3" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="painLevel">Current Pain Level (1 = Mild, 10 = Severe)</label>
+        <select id="painLevel" name="painLevel" required>
+          <option value="">Select Level</option>
+          <option value="None">0 - No Pain</option>
+          <option value="1-3">1-3 - Mild</option>
+          <option value="4-6">4-6 - Moderate</option>
+          <option value="7-9">7-9 - Severe</option>
+          <option value="10">10 - Worst Pain Imaginable</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="medicalConditions">Medical Conditions / Relevant History</label>
+        <textarea id="medicalConditions" name="medicalConditions" rows="2" placeholder="e.g. High blood pressure, arthritis, recent surgeries"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="medications">Current Medications</label>
+        <input type="text" id="medications" name="medications" autocomplete="off">
+      </div>
+
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="consent" name="consent" required>
+        <label for="consent">I confirm that the information provided is accurate and consent to treatment.</label>
+      </div>
+
+      <button type="submit" id="submitBtn">Submit Intake Form</button>
+      <div id="errorMsg" class="error-msg">Something went wrong. Please try again.</div>
     </form>
   </div>
- 
-  <div class="done" id="done">
-    <div class="done-mark">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M4 12.5l5 5L20 6.5" stroke="#2C4C3B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-    <h2>That's everything</h2>
-    <p>Your practitioner has your intake form and will read it before you arrive. You can close this page.</p>
+
+  <!-- SUCCESS CONFIRMATION -->
+  <div id="done">
+    <h3>Submission Received!</h3>
+    <p>Thank you for filling out your patient intake form. We look forward to seeing you at your appointment.</p>
   </div>
- 
+
 </div>
- 
+
 <script>
-(function () {
-  // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE:
-  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzF28dlh2ymUCTWIlmfs-sEoY4_8_MM0pAoa24raHTFmlEzR9lnxb0seTyEKDe7fq9O-w/exec";
+  // Replace this string with your exact Apps Script Web App URL from Step 1
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXTj9orGDMhrWvNxCar8X1k61PfdJwwbIl5nncE8L3iy05LAGZgU822HWH01L1VdlS_g/exec';
 
-  var REGIONS = {
-    'Canada': ['Alberta','British Columbia','Manitoba','New Brunswick','Newfoundland and Labrador','Northwest Territories','Nova Scotia','Nunavut','Ontario','Prince Edward Island','Quebec','Saskatchewan','Yukon'],
-    'United States': ['Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','District of Columbia','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming']
-  };
- 
-  var form    = document.getElementById('intake');
-  var country = document.getElementById('country');
-  var region  = document.getElementById('region');
- 
-  /* Build the 0–10 pain scale */
-  var track = document.getElementById('painTrack');
-  for (var i = 0; i <= 10; i++) {
-    var r = document.createElement('input');
-    r.type = 'radio'; r.name = 'pain'; r.value = String(i); r.id = 'pain' + i;
-    if (i === 0) r.setAttribute('data-req', '');
-    var l = document.createElement('label');
-    l.setAttribute('for', 'pain' + i);
-    l.textContent = i;
-    track.appendChild(r); track.appendChild(l);
-  }
- 
-  /* Country drives the region list and the postal code label */
-  country.addEventListener('change', function () {
-    var list = REGIONS[country.value] || [];
-    region.innerHTML = '';
-    var ph = document.createElement('option');
-    ph.value = '';
-    ph.textContent = list.length ? 'Select…' : 'Select a country first…';
-    region.appendChild(ph);
-    list.forEach(function (name) {
-      var o = document.createElement('option');
-      o.value = name; o.textContent = name;
-      region.appendChild(o);
-    });
-    var us = country.value === 'United States';
-    document.getElementById('regionLabel').textContent = us ? 'State' : 'Province / Territory';
-    document.getElementById('postalLabel').textContent = us ? 'ZIP code' : 'Postal code';
-    document.getElementById('postal').setAttribute('placeholder', us ? '90210' : 'M5V 2T6');
-  });
- 
-  /* ---- validation ---- */
- 
-  function fieldOf(el) { return el.closest('.field'); }
- 
-  function painPicked() {
-    return !!form.querySelector('input[name="pain"]:checked');
-  }
- 
-  function consentDone() {
-    return ['cAccurate','cTreat','cPrivacy'].every(function (id) {
-      return document.getElementById(id).checked;
-    });
-  }
- 
-  function valid(el) {
-    var v = (el.value || '').trim();
-    if (el.type === 'checkbox') return el.checked;
-    if (!v) return false;
-    if (el.dataset.type === 'email') return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
-    if (el.dataset.type === 'phone') return (v.replace(/\D/g, '').length >= 10);
-    return true;
-  }
- 
-  /* Every required control, with pain and consent counted as one item each */
-  var required = Array.prototype.slice.call(
-    form.querySelectorAll('[data-req]')
-  ).filter(function (el) { return el.name !== 'pain'; });
- 
-  var textRequired = required.filter(function (el) { return el.type !== 'checkbox'; });
- 
-  function tally() {
-    var done = textRequired.filter(valid).length;
-    if (painPicked()) done++;
-    if (consentDone()) done++;
-    var total = textRequired.length + 2;
-    document.getElementById('mDone').textContent = done;
-    document.getElementById('mTotal').textContent = total;
-    document.getElementById('mFill').style.width = Math.round((done / total) * 100) + '%';
-  }
- 
-  form.addEventListener('input', tally);
-  form.addEventListener('change', tally);
- 
-  textRequired.forEach(function (el) {
-    el.addEventListener('blur', function () {
-      fieldOf(el).classList.toggle('bad', !valid(el));
-    });
-    el.addEventListener('input', function () {
-      if (valid(el)) fieldOf(el).classList.remove('bad');
-    });
-  });
- 
-  /* ---- submit ---- */
- 
-  form.addEventListener('submit', function (e) {
+  document.getElementById('intakeForm').addEventListener('submit', function (e) {
     e.preventDefault();
- 
-    var bad = null;
-    textRequired.forEach(function (el) {
-      var ok = valid(el);
-      fieldOf(el).classList.toggle('bad', !ok);
-      if (!ok && !bad) bad = fieldOf(el);
-    });
- 
-    var painField = document.getElementById('painLabel').closest('.field');
-    painField.classList.toggle('bad', !painPicked());
-    if (!painPicked() && !bad) bad = painField;
- 
-    var cField = document.getElementById('consentField');
-    cField.classList.toggle('bad', !consentDone());
-    if (!consentDone() && !bad) bad = cField;
- 
-    var errBox = document.getElementById('formErr');
- 
-    if (bad) {
-      errBox.textContent = 'A few answers still need filling in. They\'re marked below.';
-      errBox.classList.add('on');
-      bad.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      var focusable = bad.querySelector('input, select, textarea');
-      if (focusable) focusable.focus({ preventScroll: true });
-      return;
-    }
- 
-    errBox.classList.remove('on');
- 
-    var btn = document.getElementById('sendBtn');
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
- 
-    var payload = {};
-    ['firstName','lastName','dob','pronouns','email','mobile','address','city','region',
-     'country','postal','reminder','reason','onset','priorCare','conditions','medications',
-     'allergies','surgeries','pregnant','focus','ecName','ecPhone','heard','website']
-      .forEach(function (k) {
-        var el = document.getElementById(k);
-        payload[k] = el ? el.value.trim() : '';
-      });
- 
-    payload.pain = form.querySelector('input[name="pain"]:checked').value;
-    payload.consent = 'Accuracy, treatment, and privacy all agreed';
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const errorMsg = document.getElementById('errorMsg');
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+    errorMsg.style.display = 'none';
 
-    // Submit data directly to Apps Script via fetch API
+    // Build JSON payload from form fields
+    const payload = {
+      firstName: document.getElementById('firstName').value,
+      lastName: document.getElementById('lastName').value,
+      email: document.getElementById('email').value,
+      mobile: document.getElementById('mobile').value,
+      dob: document.getElementById('dob').value,
+      emergencyContact: document.getElementById('emergencyContact').value,
+      reason: document.getElementById('reason').value,
+      painLevel: document.getElementById('painLevel').value,
+      medicalConditions: document.getElementById('medicalConditions').value,
+      medications: document.getElementById('medications').value,
+      consent: document.getElementById('consent').checked
+    };
+
+    // Post data to Google Apps Script bypassing CORS restrictions with mode: 'no-cors'
     fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain" },
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8'
+      },
       body: JSON.stringify(payload)
     })
     .then(function () {
+      // Show success screen
       document.getElementById('live').style.display = 'none';
       document.getElementById('done').classList.add('on');
       window.scrollTo(0, 0);
     })
     .catch(function (err) {
-      fail(err && err.message);
+      console.error('Submission Error:', err);
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Intake Form';
+      errorMsg.style.display = 'block';
     });
- 
-    function fail(msg) {
-      btn.disabled = false;
-      btn.textContent = 'Send my intake form';
-      errBox.textContent = (msg || 'That didn\'t send.') + ' Check your connection and try again, or call the clinic and we\'ll take it over the phone.';
-      errBox.classList.add('on');
-      errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   });
- 
-  tally();
-})();
 </script>
+
 </body>
 </html>
