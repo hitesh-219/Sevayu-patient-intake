@@ -773,20 +773,29 @@ button.send:disabled { opacity: 0.55; cursor: progress; }
     payload.pain = form.querySelector('input[name="pain"]:checked').value;
     payload.consent = 'Accuracy, treatment, and privacy all agreed';
 
-    // Submit data directly to Apps Script via fetch API
+   // Submit data directly to Apps Script via fetch API
     fetch(SCRIPT_URL, {
-  method: "POST",
-  body: JSON.stringify(payload)   // no headers → text/plain, no preflight
-})
-.then(function (r) { return r.json(); })
-.then(function (res) {
-  if (res.result !== "success") throw new Error(res.error || "Server rejected the form.");
-  document.getElementById('live').style.display = 'none';
-  document.getElementById('done').classList.add('on');
-  window.scrollTo(0, 0);
-})
-.catch(function (err) { fail(err && err.message); });
- 
+      method: "POST",
+      body: JSON.stringify(payload)   // no headers → text/plain, no preflight
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (res.result !== "success") throw new Error(res.error || "Server rejected the form.");
+      document.getElementById('live').style.display = 'none';
+      document.getElementById('done').classList.add('on');
+      window.scrollTo(0, 0);
+    })
+    .catch(function (err) { fail(err && err.message); });
+
+    function fail(msg) {
+      btn.disabled = false;
+      btn.textContent = 'Send my intake form';
+      errBox.textContent = (msg || 'That didn\'t send.') + ' Check your connection and try again, or call the clinic and we\'ll take it over the phone.';
+      errBox.classList.add('on');
+      errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+
   tally();
 })();
 </script>
